@@ -1,0 +1,220 @@
+.analysis-panel {
+  margin-top: 22px;
+  min-width: 0;
+  overflow: hidden;
+}
+.analysis-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+.analysis-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.analysis-summary > div {
+  border: 1px solid #d9e2ef;
+  background: #f5f7fb;
+  padding: 14px;
+}
+.analysis-summary span,
+.analysis-summary strong {
+  display: block;
+}
+.analysis-summary span {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-bottom: 7px;
+}
+.analysis-summary strong {
+  font-size: 0.82rem;
+  color: #14243a;
+}
+.analysis-status {
+  padding: 5px 7px;
+  border-left: 3px solid #0b4f92;
+}
+.analysis-review_required,
+.analysis-incomplete_analysis {
+  border-color: #d97706 !important;
+}
+.analysis-analysis_failed {
+  border-color: #dc2626 !important;
+}
+.analysis-section {
+  border-top: 1px solid #d9e2ef;
+  padding-top: 22px;
+  margin-top: 24px;
+  min-width: 0;
+}
+.analysis-section h3 {
+  font-size: 0.95rem;
+  color: #14243a;
+  margin: 0 0 16px;
+}
+.analysis-document-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.analysis-document-grid article,
+.analysis-findings article {
+  border: 1px solid #d9e2ef;
+  padding: 16px;
+  background: #fff;
+  min-width: 0;
+}
+.analysis-document-grid dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.75rem;
+  padding: 6px 0;
+  border-bottom: 1px solid #edf2f7;
+}
+.analysis-document-grid dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+.analysis-document-grid code {
+  font-size: 0.68rem;
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  margin: 12px 0;
+  background: #f5f7fb;
+  padding: 7px;
+}
+.analysis-document-grid p,
+.analysis-findings p,
+.analysis-section li {
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #475569;
+}
+.analysis-table-wrap {
+  overflow: auto;
+  max-width: 100%;
+  min-width: 0;
+  border: 1px solid #d9e2ef;
+}
+.analysis-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 680px;
+}
+.analysis-table th,
+.analysis-table td {
+  text-align: left;
+  padding: 11px 12px;
+  border-bottom: 1px solid #e5ebf3;
+  font-size: 0.76rem;
+  vertical-align: top;
+}
+.analysis-table th {
+  background: #f5f7fb;
+  color: #14243a;
+}
+.analysis-table small {
+  display: block;
+  color: #64748b;
+  margin-top: 6px;
+  max-width: 420px;
+}
+.comparison,
+.finding-severity {
+  font-size: 0.67rem;
+  font-weight: 700;
+  padding: 4px 7px;
+  background: #eaf2fb;
+  color: #0b4f92;
+}
+.comparison-mismatch,
+.severity-high {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+.comparison-not_found,
+.severity-warning {
+  background: #fffbeb;
+  color: #a16207;
+}
+.analysis-filter-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+.analysis-filter-header > div {
+  display: flex;
+  gap: 8px;
+}
+.analysis-filter-header select {
+  padding: 8px;
+  border: 1px solid #b8c7da;
+  background: #fff;
+}
+.analysis-findings {
+  display: grid;
+  gap: 12px;
+}
+.analysis-findings h4 {
+  font-size: 0.9rem;
+  margin: 10px 0;
+}
+.analysis-findings blockquote {
+  margin: 12px 0;
+  padding: 10px;
+  border-left: 3px solid #1565c0;
+  background: #f5f7fb;
+  font-size: 0.75rem;
+}
+.analysis-warning {
+  padding: 12px;
+  border: 1px solid #f4a900;
+  background: #fffbeb;
+  color: #92400e;
+}
+.analysis-inline-error {
+  display: block;
+  color: #dc2626;
+  font-size: 0.7rem;
+}
+.analysis-section ul {
+  padding-left: 20px;
+}
+@media (max-width: 900px) {
+  .analysis-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .analysis-document-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .analysis-heading,
+  .analysis-filter-header {
+    flex-direction: column;
+  }
+  .analysis-heading .gov-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .analysis-summary {
+    grid-template-columns: 1fr;
+  }
+  .analysis-filter-header > div {
+    width: 100%;
+    flex-direction: column;
+  }
+  .analysis-filter-header select {
+    width: 100%;
+  }
+}

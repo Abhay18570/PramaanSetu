@@ -1,0 +1,12 @@
+import { z } from 'zod'
+export const intents=['APPLICATION_STATUS','DOCUMENT_SUMMARY','MISSING_DOCUMENTS','VERIFICATION_FINDINGS','COMPLIANCE_FINDINGS','OFFICER_FEEDBACK','INVESTIGATION_SIGNALS','EVIDENCE_EXPLANATION','SIMULATION_EXPLANATION','CORRECTION_ROADMAP','APPLICATION_SUMMARY','HOW_TO_USE','UNSUPPORTED'] as const
+export type CopilotIntent=typeof intents[number]
+export const evidenceItemSchema=z.object({evidenceId:z.string(),sourceModule:z.enum(['APPLICATION','DOCUMENT_ANALYSIS','COMPLIANCE','INTELLIGENCE','EVIDENCE_INSPECTOR','SIMULATOR']),applicationId:z.string(),sourceId:z.string(),documentId:z.string().nullable(),findingId:z.string().nullable(),ruleId:z.string().nullable(),signalId:z.string().nullable(),scenarioId:z.string().nullable(),title:z.string(),summary:z.string(),value:z.string().nullable(),pageNumber:z.number().int().positive().nullable(),evidenceFingerprint:z.string(),evidenceStatus:z.enum(['CURRENT','STALE','MISSING','HYPOTHETICAL','UNRESOLVED']),accessScope:z.enum(['INSTITUTION','OFFICER','BOTH']),targetRoute:z.string()})
+export type CopilotEvidence=z.infer<typeof evidenceItemSchema>
+export const citationSchema=evidenceItemSchema.pick({evidenceId:true,sourceModule:true,sourceId:true,applicationId:true,documentId:true,pageNumber:true,title:true,targetRoute:true,evidenceFingerprint:true,evidenceStatus:true})
+export type Citation=z.infer<typeof citationSchema>
+const messageSchema=z.object({messageId:z.string(),role:z.enum(['USER','ASSISTANT','SYSTEM_NOTICE']),content:z.string().max(6000),createdAt:z.string(),citations:z.array(citationSchema).max(12),limitations:z.array(z.string().max(500)).max(8)})
+export type CopilotMessage=z.infer<typeof messageSchema>
+export const conversationSchema=z.object({conversationId:z.string(),ownerAccountId:z.string(),role:z.enum(['INSTITUTION','OFFICER']),applicationId:z.string(),contextType:z.enum(['APPLICATION','DOCUMENT_ANALYSIS','COMPLIANCE_EVALUATION','INVESTIGATION_SIGNAL','EVIDENCE_INSPECTOR','SIMULATION_SCENARIO']),messages:z.array(messageSchema).max(60),createdAt:z.string(),updatedAt:z.string(),schemaVersion:z.literal(1)})
+export type Conversation=z.infer<typeof conversationSchema>
+export const chatResponseSchema=z.object({answer:z.string(),mode:z.literal('DETERMINISTIC_EVIDENCE'),language:z.enum(['en','hi','mr']),citationIds:z.array(z.string()),limitations:z.array(z.string()),suggestedFollowUps:z.array(z.string()),requestId:z.string()})

@@ -1,0 +1,50 @@
+{
+  "name": "sih26261",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "test": "node --test tests/*.test.ts",
+    "test:hero-carousel": "node tests/hero-carousel-browser.mjs",
+    "test:i18n-browser": "node tests/i18n-browser.mjs",
+    "test:browser": "node tests/module03-browser.mjs",
+    "test:analysis-browser": "node tests/module04-browser.mjs",
+    "test:compliance-browser": "node tests/module05-browser.mjs",
+    "test:intelligence-browser": "node tests/module06-browser.mjs",
+    "test:evidence-browser": "node tests/module07-browser.mjs"
+    ,"test:simulator-browser": "node tests/module08-browser.mjs"
+    ,"test:copilot-browser": "node tests/module09-browser.mjs"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.9.2",
+    "@tailwindcss/vite": "^4.3.3",
+    "axios": "^1.20.0",
+    "framer-motion": "^14.6.0",
+    "i18next": "^26.5.6",
+    "lucide-react": "^1.61.0",
+    "pdfjs-dist": "^5.4.624",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-hook-form": "^7.90.0",
+    "react-i18next": "^17.1.3",
+    "react-router-dom": "^7.18.4",
+    "recharts": "^3.10.1",
+    "sonner": "^2.0.8",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "oxlint": "^1.88.0",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.4"
+  }
+}

@@ -1,0 +1,7 @@
+import type { ApplicationRecord } from '../applications/model'
+import type { SavedReport } from '../analysis/model'
+import { documentBlobRepository } from '../storage/documentBlobRepository'
+import type { DocumentMetadata } from '../storage/documentMetadataRepository'
+import { simulationResultSchema, type SimulationOverride } from './model'
+const apiBase=(import.meta.env.VITE_API_BASE_URL||'http://127.0.0.1:8000').replace(/\/$/,'')
+export async function simulate(application:ApplicationRecord,documents:DocumentMetadata[],analysis:SavedReport|null,analysisStale:boolean,catalogVersion:string,overrides:SimulationOverride[],signal?:AbortSignal){const documentPayload=await Promise.all(documents.map(async d=>({id:d.id,documentType:d.documentType,fileName:d.fileName,storageKey:d.storageKey,blobAvailable:!!await documentBlobRepository.get(d.storageKey)})));let response:Response;try{response=await fetch(`${apiBase}/api/compliance/simulate`,{method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify({application,documents:documentPayload,analysisReport:analysis,analysisStale,requestedCatalogVersion:catalogVersion,overrides})})}catch(error){if((error as Error).name==='AbortError')throw error;throw new Error('Simulation service is unavailable. Your original records were not changed.')}if(!response.ok){const body=await response.json().catch(()=>null);throw new Error(body?.detail||'Simulation failed.')}return simulationResultSchema.parse(await response.json())}
