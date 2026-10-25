@@ -18,6 +18,9 @@
     "test:evidence-browser": "node tests/module07-browser.mjs"
     ,"test:simulator-browser": "node tests/module08-browser.mjs"
     ,"test:copilot-browser": "node tests/module09-browser.mjs"
+    ,"test:demo-browser": "node tests/sidebar-demo-browser.mjs"
+    ,"test:role-demo-browser": "node tests/role-selection-demo-browser.mjs"
+    ,"test:demo-draft-browser": "node tests/demo-draft-browser.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.2",

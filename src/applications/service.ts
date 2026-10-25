@@ -21,28 +21,28 @@ import type { ApplicationRecord } from './model.ts'
 import type { User } from '../storage/models.ts'
 import { analysisReportRepository } from '../storage/analysisReportRepository.ts'
 import { complianceRepository, reviewRepository } from '../storage/complianceRepository.ts'
+import { isDemoSession, readDemoNumber, writeDemoNumber } from '../demo/storage.ts'
 export const applicationService = {
   async create(user: User) {
     return withStorageLock(async () => {
-      if (user.role !== 'INSTITUTION' || !userRepository.findById(user.id))
+      if (user.role !== 'INSTITUTION' || (!user.isDemo && !userRepository.findById(user.id)))
         throw new Error('An institution account is required.')
       return transaction(() => {
         const year = new Date().getFullYear()
-        const sequence = readValue(
+        const demo = isDemoSession()
+        const sequence = demo ? null : readValue(
           storageKeys.sequence,
-          z.object({
-            version: z.literal(1),
-            next: z.number().int().positive(),
-          }),
+          z.object({ version: z.literal(1), next: z.number().int().positive() }),
           { version: 1, next: 1 },
         )
-        let number = sequence.next
+        let number = demo ? readDemoNumber('nextApplicationSequence', 1) : sequence!.next
         const refs = new Set(
           applicationRepository.list().map((item) => item.referenceNumber),
         )
         while (refs.has(`PS-${year}-${String(number).padStart(6, '0')}`))
           number++
-        writeValue(storageKeys.sequence, { version: 1, next: number + 1 })
+        if (demo) writeDemoNumber('nextApplicationSequence', number + 1)
+        else writeValue(storageKeys.sequence, { version: 1, next: number + 1 })
         const now = new Date().toISOString()
         const id = crypto.randomUUID()
         const app = applicationRepository.save({

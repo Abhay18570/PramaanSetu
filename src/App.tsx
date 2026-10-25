@@ -14,6 +14,8 @@ import './applications/applications.css'
 import ProfilePage from './portals/ProfilePage'
 import './App.css'
 import './portals/portal.css'
+import './portals/sidebar-redesign.css'
+import './portals/portal-mobile-fix.css'
 import DocumentLocalizer from './i18n/DocumentLocalizer'
 const IntelligencePage = lazy(() => import('./intelligence/IntelligencePage'))
 const EvidenceInspector = lazy(() => import('./evidence/EvidenceInspector'))

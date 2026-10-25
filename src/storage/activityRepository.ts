@@ -1,9 +1,15 @@
 import { activitySchema } from './models.ts'
 import type { Activity } from './models.ts'
 import { readRecords, storageKeys, writeRecords } from './localStorage.ts'
+import { isDemoSession, readDemoCollection, writeDemoCollection } from '../demo/storage.ts'
+function write(records: Activity[]) {
+  const valid = activitySchema.array().parse(records)
+  if (isDemoSession()) writeDemoCollection('activity', valid)
+  else writeRecords(storageKeys.activity, activitySchema, valid)
+}
 export const activityRepository = {
   list() {
-    return readRecords(storageKeys.activity, activitySchema)
+    return isDemoSession() ? readDemoCollection<Activity>('activity') : readRecords(storageKeys.activity, activitySchema)
   },
   forUser(userId: string) {
     return this.list()
@@ -21,13 +27,11 @@ export const activityRepository = {
       id: crypto.randomUUID(),
       createdAt: new Date().toISOString(),
     })
-    writeRecords(storageKeys.activity, activitySchema, [...this.list(), valid])
+    write([...this.list(), valid])
     return valid
   },
   removeForUser(userId: string) {
-    writeRecords(
-      storageKeys.activity,
-      activitySchema,
+    write(
       this.list().filter((event) => event.userId !== userId),
     )
   },

@@ -5,6 +5,7 @@ import type { AuthValue } from './context'
 import { localAccountService } from './service'
 import { sessionRepository } from '../storage/sessionRepository'
 import { subscribeStorage } from '../storage/localStorage'
+import { startDemo as createDemoSession } from '../demo/service'
 function restore() { try { return { user: sessionRepository.restore(), storageNotice: '' } } catch (error) { return { user: null, storageNotice: error instanceof Error ? error.message : 'Local data could not be read.' } } }
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState(restore)
@@ -17,6 +18,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async signOut() { await localAccountService.signOut(); setState({ user: null, storageNotice: '' }) },
     async deleteAccount() { if (!state.user) throw new Error('Choose a local account first.'); await localAccountService.deleteAccount(state.user.id); setState({ user: null, storageNotice: '' }) },
     async clearData() { await localAccountService.clearData(); setState({ user: null, storageNotice: '' }) },
+    async startDemo(role) { const user=createDemoSession(role); setState({user,storageNotice:''}); return user },
   }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

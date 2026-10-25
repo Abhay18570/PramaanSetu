@@ -9,26 +9,32 @@ import {
   Shield,
   Building,
   Home,
+  PanelLeftClose,
+  PanelLeftOpen,
+  RotateCcw,
+  ArrowLeftRight,
 } from 'lucide-react'
 import { Brand } from '../components/Shared'
 import { useAuth } from '../auth/useAuth'
 import { rolePath } from '../auth/model'
 import { portalNavigation } from './data'
 import LanguageSelector from '../components/LanguageSelector'
+import { exitDemo,resetDemo } from '../demo/service'
 
-export function Sidebar({ close }: { close?: () => void }) {
+export function Sidebar({ close,collapsed=false,onToggle,mobile=false }: { close?: () => void;collapsed?:boolean;onToggle?:()=>void;mobile?:boolean }) {
   const { user } = useAuth()
   if (!user) return null
 
   const isInstitution = user.role === 'INSTITUTION'
 
   return (
-    <div className="gov-sidebar-container">
+    <div className={`gov-sidebar-container ${collapsed&&!mobile?'is-collapsed':''}`}>
       <div className="gov-sidebar-brand-box">
         <Brand />
         <span className="gov-sidebar-portal-tag">
           {isInstitution ? 'INSTITUTION WORKBENCH' : 'SCRUTINY OFFICER WORKBENCH'}
         </span>
+        {!mobile&&<button className="gov-sidebar-collapse" onClick={onToggle} aria-expanded={!collapsed} aria-label={collapsed?'Expand sidebar':'Collapse sidebar'} title={collapsed?'Expand sidebar':'Collapse sidebar'}>{collapsed?<PanelLeftOpen size={19}/>:<PanelLeftClose size={19}/>}</button>}
       </div>
 
       <nav aria-label="Portal Navigation" className="gov-sidebar-nav">
@@ -41,6 +47,8 @@ export function Sidebar({ close }: { close?: () => void }) {
             className={({ isActive }) =>
               `gov-sidebar-link ${isActive ? 'gov-sidebar-link-active' : ''}`
             }
+            title={collapsed&&!mobile?title:undefined}
+            aria-label={collapsed&&!mobile?title:undefined}
           >
             <Icon size={18} />
             <span>{title}</span>
@@ -69,13 +77,16 @@ export function Sidebar({ close }: { close?: () => void }) {
           </div>
         </Link>
         <SignOut onDone={close} />
+        {user.isDemo&&<DemoActions close={close}/>} 
       </div>
     </div>
   )
 }
 
+function DemoActions({close}:{close?:()=>void}){const {user,startDemo}=useAuth();const navigate=useNavigate();if(!user?.isDemo)return null;return <div className="gov-demo-actions"><button onClick={async()=>{const role=user.role==='INSTITUTION'?'OFFICER':'INSTITUTION';await startDemo(role);close?.();navigate(`${rolePath(role)}/dashboard`)}} title="Switch Demo Role"><ArrowLeftRight size={16}/><span>Switch Demo Role</span></button><button onClick={()=>{if(confirm('Reset only the sample demo workspace?')){resetDemo();location.reload()}}} title="Reset Demo Data"><RotateCcw size={16}/><span>Reset Demo Data</span></button><button onClick={()=>{exitDemo();close?.();window.location.assign('/')}} title="Exit Demo"><LogOut size={16}/><span>Exit Demo</span></button></div>}
+
 function SignOut({ onDone }: { onDone?: () => void }) {
-  const { signOut } = useAuth()
+  const { signOut,user } = useAuth()
   const navigate = useNavigate()
   const [error, setError] = useState('')
 
@@ -88,7 +99,7 @@ function SignOut({ onDone }: { onDone?: () => void }) {
           try {
             await signOut()
             onDone?.()
-            navigate('/login', { replace: true })
+            navigate(user?.isDemo?'/' : '/login', { replace: true })
           } catch (err) {
             setError(err instanceof Error ? err.message : 'Could not sign out.')
           }
@@ -166,6 +177,7 @@ export function DashboardHeader({ openSidebar }: { openSidebar: () => void }) {
       </div>
 
       <div className="gov-header-right">
+        {user.isDemo&&<span className="gov-demo-mode" title="You're exploring a sample workspace. Data and verification results are for demonstration.">Demo Mode</span>}
         <LanguageSelector compact />
         <div className="gov-portal-meta-badge">
           {isInstitution ? <Building size={14} /> : <Shield size={14} />}
@@ -234,20 +246,22 @@ export function DashboardHeader({ openSidebar }: { openSidebar: () => void }) {
 export default function DashboardLayout() {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const location = useLocation()
+  const [collapsed,setCollapsed]=useState(()=>localStorage.getItem('pramaansetu_sidebar_collapsed_v1')==='true')
+  const toggle=()=>setCollapsed(value=>{localStorage.setItem('pramaansetu_sidebar_collapsed_v1',String(!value));return !value})
 
   useEffect(() => {
     dialogRef.current?.close()
   }, [location.pathname])
 
   return (
-    <div className="gov-portal-shell">
+    <div className={`gov-portal-shell ${collapsed?'sidebar-collapsed':''}`}>
       <a className="gov-skip-link" href="#portal-content">
         Skip to workspace content
       </a>
 
       {/* Desktop Sidebar */}
       <aside className="gov-portal-sidebar">
-        <Sidebar />
+        <Sidebar collapsed={collapsed} onToggle={toggle}/>
       </aside>
 
       {/* Mobile Drawer */}
@@ -264,12 +278,13 @@ export default function DashboardLayout() {
             autoFocus
             type="button"
             className="gov-mobile-sidebar-close"
+            style={{ zIndex: 5 }}
             aria-label="Close sidebar"
             onClick={() => dialogRef.current?.close()}
           >
             <X size={22} />
           </button>
-          <Sidebar close={() => dialogRef.current?.close()} />
+          <Sidebar mobile close={() => dialogRef.current?.close()} />
         </div>
       </dialog>
 

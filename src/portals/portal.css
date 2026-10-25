@@ -230,6 +230,63 @@
   text-decoration: underline;
 }
 
+.gov-role-demo-access {
+  display: grid;
+  gap: 6px;
+  text-align: center;
+}
+
+.gov-role-demo-button {
+  width: 100%;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #174ea6;
+  border-radius: var(--radius-sm);
+  background: #eaf3ff;
+  color: #174ea6;
+  font: inherit;
+  font-size: 0.84375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.gov-role-demo-button:hover:not(:disabled) {
+  background: #d5e7fc;
+}
+
+.gov-role-demo-button:focus-visible {
+  outline: 3px solid #f5a623;
+  outline-offset: 2px;
+}
+
+.gov-role-demo-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.gov-role-demo-access small {
+  color: var(--text-muted);
+  font-size: 0.71875rem;
+}
+
+.gov-role-demo-error {
+  color: var(--error-red);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.gov-spin {
+  animation: gov-spin 0.8s linear infinite;
+}
+
+@keyframes gov-spin {
+  to { transform: rotate(360deg); }
+}
+
 .gov-active-session-card {
   text-align: center;
   padding: 35px 25px;

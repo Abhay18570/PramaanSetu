@@ -8,5 +8,6 @@ export interface AuthValue {
   signOut: () => Promise<void>
   deleteAccount: () => Promise<void>
   clearData: () => Promise<void>
+  startDemo: (role: User['role']) => Promise<User>
 }
 export const AuthContext = createContext<AuthValue | null>(null)

@@ -376,3 +376,12 @@ Conversation history uses the versioned `pramaansetu_copilot_conversations_v1` b
 The assistant reports stale, missing and hypothetical evidence, labels demonstration rules and simulation limits, and does not claim official approval, authenticity or fraud. Browser-local access controls remain prototype conveniences. Production use requires trusted server sessions, authorization at retrieval time, encrypted server persistence, audit logging and evidence-version checks.
 
 Validation commands include `npm run lint`, `npm run build`, `npm test`, `cd backend && .venv/bin/pytest -q`, and `npm run test:copilot-browser`.
+# Collapsible Portal Sidebar and Evaluator Demo
+
+Institution and officer workspaces share a light-blue responsive sidebar. On desktop it can collapse from 260 px to a 78 px icon rail; the preference is stored independently under `pramaansetu_sidebar_collapsed_v1`. Navigation remains accessible through icon labels and tooltips. At 768 px and below the existing modal drawer is used with backdrop, Escape support, focusable close control and automatic route-change closing.
+
+The landing page provides one-click Institution Demo and Officer Demo access. Demo sessions use fixed role-specific identities and continue through the existing route guards. Four fictional applications cover a consistent case, an expired-certificate finding, an institution-name mismatch and shared-fingerprint review data. These records are clearly marked as sample data and exercise the existing dashboards, analysis presentation, demonstration compliance findings, evidence view and relationship detector.
+
+All fixtures are isolated under `pramaansetu_demo_v1`. While a demo session is active, repositories read this namespace instead of normal application, document, analysis, compliance and review keys. Seeding is idempotent. Reset Demo Data rewrites only the demo namespace, Exit Demo removes only the session, and role switching creates exactly one active demo role. No certificate blobs or external verification claims are created; source previews report unavailable blobs honestly.
+
+Run `npm run test:demo-browser` for the landing-to-dashboard, collapse persistence, navigation, role switching, mobile drawer, reset, exit and regular-data-isolation workflow.

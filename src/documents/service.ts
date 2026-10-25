@@ -10,8 +10,9 @@ import { userRepository } from '../storage/userRepository.ts'
 import type { User } from '../storage/models.ts'
 import { documentCategories } from '../applications/config.ts'
 import { validateFile } from './validation.ts'
+import { isDemoSession } from '../demo/storage.ts'
 export function getApplication(user: User, id: string, editable = false) {
-  if (!userRepository.findById(user.id))
+  if (!user.isDemo && !userRepository.findById(user.id))
     throw new Error('This local account no longer exists.')
   const record = applicationRepository.find(id)
   if (
@@ -44,6 +45,7 @@ export function recordActivity(
 // Metadata is the source of truth. Interrupted uploads/deletions leave unreferenced
 // blobs, which are safely collected on the next document operation or page visit.
 export async function collectOrphans(): Promise<string> {
+  if (isDemoSession()) return ''
   try {
     const keep = new Set(
       documentMetadataRepository.list().map((item) => item.storageKey),

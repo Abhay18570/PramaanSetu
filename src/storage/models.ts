@@ -30,11 +30,14 @@ export interface User {
   department?: string
   createdAt: string
   updatedAt: string
+  isDemo?: boolean
 }
 export interface LocalSession {
   userId: string
   createdAt: string
   sessionVersion: 1
+  isDemo?: boolean
+  demoRole?: Role
 }
 export interface Application {
   id: string
@@ -94,6 +97,7 @@ export const userSchema: z.ZodType<User> = z
     department: text.optional(),
     createdAt: z.iso.datetime(),
     updatedAt: z.iso.datetime(),
+    isDemo: z.boolean().optional(),
   })
   .superRefine((user, context) => {
     const required =
@@ -113,6 +117,8 @@ export const sessionSchema: z.ZodType<LocalSession> = z.object({
   userId: z.uuid(),
   createdAt: z.iso.datetime(),
   sessionVersion: z.literal(1),
+  isDemo: z.boolean().optional(),
+  demoRole: z.enum(roles).optional(),
 })
 export const applicationSchema: z.ZodType<Application> = z.object({
   id: z.uuid(),

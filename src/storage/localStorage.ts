@@ -12,6 +12,7 @@ export const storageKeys = {
   investigations: 'pramaansetu_investigations_v1',
   simulationScenarios: 'pramaansetu_simulation_scenarios_v1',
   copilotConversations: 'pramaansetu_copilot_conversations_v1',
+  demo: 'pramaansetu_demo_v1',
 } as const
 export type StorageKey = (typeof storageKeys)[keyof typeof storageKeys]
 export class StorageError extends Error {}

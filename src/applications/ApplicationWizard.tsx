@@ -25,19 +25,26 @@ export default function ApplicationWizard() {
   const [dirty, setDirty] = useState(false)
   const [notice, setNotice] = useState('')
   const [declaration, setDeclaration] = useState(false)
+  const [retryVersion, setRetryVersion] = useState(0)
   const creating = useRef<Promise<ApplicationRecord> | null>(null)
   const accountId = user?.id
+  const demoSession = user?.isDemo === true
   useEffect(() => {
     let active = true
-    const user = accountId ? userRepository.findById(accountId) : null
-    if (!user) return
+    const activeUser = user?.isDemo ? user : accountId ? userRepository.findById(accountId) : null
+    if (!activeUser) {
+      queueMicrotask(() => {
+        if (active) setError('Unable to open a new application. Please try again.')
+      })
+      return () => { active = false }
+    }
     if (id) {
       queueMicrotask(() => {
         if (!active) return
         setApplication(null)
         setError('')
         try {
-          const record = getApplication(user, id, true)
+          const record = getApplication(activeUser, id, true)
           setApplication(record)
           setDirty(false)
         } catch (err) {
@@ -47,7 +54,7 @@ export default function ApplicationWizard() {
         }
       })
     } else {
-      creating.current ??= applicationService.create(user)
+      creating.current ??= applicationService.create(activeUser)
       void creating.current
         .then((record) => {
           if (active)
@@ -56,13 +63,15 @@ export default function ApplicationWizard() {
             })
         })
         .catch((err) => {
-          if (active) setError(err.message)
+          console.error('Draft initialization failed', err)
+          creating.current = null
+          if (active) setError('Unable to open a new application. Please try again.')
         })
     }
     return () => {
       active = false
     }
-  }, [id, accountId, navigate])
+  }, [id, accountId, demoSession, navigate, retryVersion, user])
   useEffect(() => {
     if (!dirty) return
     const warn = (event: BeforeUnloadEvent) => {
@@ -91,9 +100,12 @@ export default function ApplicationWizard() {
       <div className="gov-card application-panel">
         <h1>New Application</h1>
         {error ? (
-          <p className="gov-form-error" role="alert">
-            {error}
-          </p>
+          <>
+            <p className="gov-form-error" role="alert">{error}</p>
+            <button type="button" className="gov-btn gov-btn-primary" onClick={() => { setError(''); setRetryVersion(value => value + 1) }}>
+              Retry
+            </button>
+          </>
         ) : (
           <p role="status">Opening draft…</p>
         )}

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowRight, ShieldCheck, X, Eye, HelpCircle, Check, MessageSquare } from 'lucide-react'
+import { ArrowRight, ShieldCheck, X, Eye, HelpCircle, Check, MessageSquare, Building2 } from 'lucide-react'
 import Navbar from './components/Navbar'
 import {
   CTASection,
@@ -15,9 +15,14 @@ import {
   QuickAccessSection,
 } from './components/Sections'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from './auth/useAuth'
+import { dashboardPath } from './auth/model'
+import './demo/demo.css'
 
 export default function LandingPage() {
   const navigate = useNavigate()
+  const {startDemo}=useAuth()
+  const enterDemo=async(role:'INSTITUTION'|'OFFICER')=>{await startDemo(role);navigate(dashboardPath(role))}
   const [modalType, setModalType] = useState<'info' | 'accessibility' | 'help' | 'feedback' | null>(null)
   const [modalTitle, setModalTitle] = useState('')
   const [modalContent, setModalContent] = useState('')
@@ -98,6 +103,7 @@ export default function LandingPage() {
       {/* Main Content Area */}
       <main id="main-content" tabIndex={-1}>
         <HeroSection open={() => navigate('/select-role')} />
+        <section className="demo-entry" aria-labelledby="demo-entry-title"><div className="demo-entry-heading"><span>SIH 2026 EVALUATOR ACCESS</span><h2 id="demo-entry-title">Explore PramaanSetu — Live Demo</h2><p>Experience the platform from both institutional and regulatory perspectives. No registration required.</p></div><div className="demo-entry-grid"><article><Building2 size={30}/><div><h3>Institution Workspace</h3><p>Submit applications, upload documents and explore compliance guidance.</p></div><button className="demo-btn institution" onClick={()=>void enterDemo('INSTITUTION')}>Explore Institution Demo <ArrowRight size={17}/></button></article><article><ShieldCheck size={30}/><div><h3>Officer Workspace</h3><p>Review applications, inspect evidence and explore verification findings.</p></div><button className="demo-btn officer" onClick={()=>void enterDemo('OFFICER')}>Explore Officer Demo <ArrowRight size={17}/></button></article></div><small>Uses clearly labeled fictional sample data stored separately in this browser.</small></section>
         <QuickAccessSection onSelectAction={openServiceModal} />
         <PlatformUpdatesSection />
         <FeaturesSection onSelectService={openServiceModal} />

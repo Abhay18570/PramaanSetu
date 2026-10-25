@@ -1,0 +1,43 @@
+@media (max-width: 600px) {
+  #root {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  .gov-portal-shell,
+  .gov-portal-content-area,
+  .gov-portal-header,
+  .gov-portal-main {
+    min-width: 0;
+    max-width: 100vw;
+  }
+
+  .gov-portal-header {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .gov-header-left {
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+
+  .gov-header-right {
+    flex: 0 1 auto;
+    gap: 5px;
+    max-width: 58%;
+  }
+
+  .gov-header-right .language-selector {
+    max-width: 88px;
+  }
+
+  .gov-header-right .language-selector select {
+    max-width: 78px;
+  }
+
+  .gov-header-profile-btn > svg,
+  .gov-demo-mode {
+    display: none;
+  }
+}

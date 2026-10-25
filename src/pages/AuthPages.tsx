@@ -10,7 +10,10 @@ import {
   ShieldCheck,
   CheckCircle2,
   Layers,
+  LoaderCircle,
+  PlayCircle,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Brand } from '../components/Shared'
 import { FormField, LocalNotice, SubmitButton } from '../components/Forms'
 import AccountFields from '../components/AccountFields'
@@ -96,6 +99,24 @@ function AuthHeading({ title, text }: { title: string; text: string }) {
 export function RoleSelectionCard({ role }: { role: Role }) {
   const isInstitution = role === 'INSTITUTION'
   const Icon = isInstitution ? Building2 : ShieldCheck
+  const { t } = useTranslation()
+  const { startDemo } = useAuth()
+  const navigate = useNavigate()
+  const [demoBusy, setDemoBusy] = useState(false)
+  const [demoError, setDemoError] = useState('')
+
+  async function openDemo() {
+    if (demoBusy) return
+    setDemoBusy(true)
+    setDemoError('')
+    try {
+      await startDemo(role)
+      navigate(dashboardPath(role))
+    } catch (error) {
+      setDemoError(error instanceof Error ? error.message : t('demoLogin.error'))
+      setDemoBusy(false)
+    }
+  }
 
   return (
     <div className={`gov-role-card ${isInstitution ? 'role-institution' : 'role-officer'}`}>
@@ -148,6 +169,19 @@ export function RoleSelectionCard({ role }: { role: Role }) {
           <span>Already registered? Access workspace</span>
           <ArrowRight size={13} />
         </Link>
+        <div className="gov-role-demo-access">
+          <button
+            type="button"
+            className="gov-role-demo-button"
+            disabled={demoBusy}
+            onClick={() => void openDemo()}
+          >
+            {demoBusy ? <LoaderCircle className="gov-spin" size={17} /> : <PlayCircle size={17} />}
+            <span>{demoBusy ? t('demoLogin.opening') : t(isInstitution ? 'demoLogin.institution' : 'demoLogin.officer')}</span>
+          </button>
+          <small>{t('demoLogin.supporting')}</small>
+          {demoError && <span className="gov-role-demo-error" role="alert">{demoError}</span>}
+        </div>
       </div>
     </div>
   )

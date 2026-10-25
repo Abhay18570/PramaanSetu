@@ -1,5 +1,11 @@
 import { z } from 'zod'
 import { readRecords, storageKeys, writeRecords } from './localStorage.ts'
+import { isDemoSession, readDemoCollection, writeDemoCollection } from '../demo/storage.ts'
+function write(records: DocumentMetadata[]) {
+  const valid = documentMetadataSchema.array().parse(records)
+  if (isDemoSession()) writeDemoCollection('documents', valid)
+  else writeRecords(storageKeys.documents, documentMetadataSchema, valid)
+}
 export interface DocumentMetadata {
   id: string
   applicationId: string
@@ -10,7 +16,7 @@ export interface DocumentMetadata {
   uploadedAt: string
   storageKey: string
 }
-const schema: z.ZodType<DocumentMetadata> = z.object({
+export const documentMetadataSchema: z.ZodType<DocumentMetadata> = z.object({
   id: z.uuid(),
   applicationId: z.uuid(),
   documentType: z.string(),
@@ -22,28 +28,25 @@ const schema: z.ZodType<DocumentMetadata> = z.object({
 })
 export const documentMetadataRepository = {
   list() {
-    return readRecords(storageKeys.documents, schema)
+    if (isDemoSession()) return readDemoCollection<DocumentMetadata>('documents')
+    return readRecords(storageKeys.documents, documentMetadataSchema)
   },
   forApplication(id: string) {
     return this.list().filter((item) => item.applicationId === id)
   },
   save(record: DocumentMetadata) {
-    writeRecords(storageKeys.documents, schema, [
+    write([
       ...this.list().filter((item) => item.id !== record.id),
       record,
     ])
   },
   remove(id: string) {
-    writeRecords(
-      storageKeys.documents,
-      schema,
+    write(
       this.list().filter((item) => item.id !== id),
     )
   },
   removeApplications(ids: string[]) {
-    writeRecords(
-      storageKeys.documents,
-      schema,
+    write(
       this.list().filter((item) => !ids.includes(item.applicationId)),
     )
   },
