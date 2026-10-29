@@ -30,7 +30,7 @@ export function Sidebar({ close,collapsed=false,onToggle,mobile=false }: { close
   return (
     <div className={`gov-sidebar-container ${collapsed&&!mobile?'is-collapsed':''}`}>
       <div className="gov-sidebar-brand-box">
-        <Brand />
+        <Brand variant={collapsed && !mobile ? 'sidebar-collapsed' : 'sidebar'} to="/" />
         <span className="gov-sidebar-portal-tag">
           {isInstitution ? 'INSTITUTION WORKBENCH' : 'SCRUTINY OFFICER WORKBENCH'}
         </span>

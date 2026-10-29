@@ -17,6 +17,7 @@ import { useLocalData } from './useLocalData'
 import { complianceRepository, reviewRepository } from '../storage/complianceRepository'
 import { useTranslation } from 'react-i18next'
 import { formatDate } from '../i18n'
+import { OverallDataAnalysis } from './OverallDataAnalysis'
 
 export function RegistrationSuccess() {
   const location = useLocation()
@@ -140,6 +141,7 @@ export function InstitutionDashboard() {
 export function OfficerDashboard() {
   const { user } = useAuth()
   const { applications, activity, error } = useLocalData()
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>('All')
 
   // For officer: queue includes pending applications
   const queue = applications.filter(row => row.status !== 'REVIEWED')
@@ -208,11 +210,20 @@ export function OfficerDashboard() {
           </div>
           <div className="gov-info-callout"><Scale size={16}/><p><strong>Compliance:</strong> {awaiting} awaiting evaluation · {withIssues} with issues · {reviewDrafts} review drafts awaiting finalization</p></div>
 
+          {/* Overall Data Analysis */}
+          <OverallDataAnalysis
+            applications={applications}
+            selectedStatusFilter={selectedStatusFilter}
+            onSelectStatusFilter={setSelectedStatusFilter}
+          />
+
           {/* Review Queue Table */}
           <DataTable
             records={queue}
             officer
             title="Active Review Queue"
+            statusFilter={selectedStatusFilter}
+            onStatusFilterChange={setSelectedStatusFilter}
           />
 
           {/* Bottom Grid */}

@@ -12,9 +12,189 @@
   gap: 12px;
   text-decoration: none;
   color: var(--navy-primary);
+  max-width: 100%;
 }
 .gov-brand-light {
   color: var(--white);
+}
+
+/* Base Logo Image - Proportional, uncropped, preserved aspect ratio */
+.pramaan-logo-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+/* Header Variant */
+.pramaan-logo-header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 2px;
+  background: #ffffff;
+}
+.pramaan-logo-header .pramaan-logo-img {
+  width: 58px;
+  height: 58px;
+}
+.gov-brand:hover .pramaan-logo-header .pramaan-logo-img {
+  transform: scale(1.03);
+}
+
+/* Auth Header Variant */
+.pramaan-logo-auth {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 2px;
+  background: #ffffff;
+}
+.pramaan-logo-auth .pramaan-logo-img {
+  width: 52px;
+  height: 52px;
+}
+
+/* Auth Card (Centered) Variant */
+.gov-auth-heading-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.pramaan-logo-auth-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 82px;
+  height: 82px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 6px;
+  border: 1px solid var(--border-color, #e2e8f0);
+  box-shadow: 0 4px 14px rgba(11, 31, 84, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pramaan-logo-auth-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(11, 31, 84, 0.12);
+}
+.pramaan-logo-auth-card .pramaan-logo-img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Sidebar Variant (Expanded) */
+.pramaan-logo-sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 148px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.gov-brand:hover .pramaan-logo-sidebar {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.38);
+}
+.pramaan-logo-sidebar .pramaan-logo-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+}
+
+/* Sidebar Collapsed Variant */
+.pramaan-logo-sidebar-collapsed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 3px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  margin: 0 auto;
+}
+.pramaan-logo-sidebar-collapsed .pramaan-logo-emblem {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pramaan-logo-sidebar-collapsed .pramaan-logo-emblem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 10%;
+  transform: scale(1.68);
+  transform-origin: center 25%;
+}
+
+/* Footer Variant */
+.pramaan-logo-footer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.pramaan-logo-footer .pramaan-logo-img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Emblem / Icon Badge Variant */
+.pramaan-logo-emblem-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(11, 31, 84, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+.pramaan-logo-emblem-badge .pramaan-logo-emblem {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pramaan-logo-emblem-badge .pramaan-logo-emblem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 10%;
+  transform: scale(1.68);
+  transform-origin: center 25%;
 }
 
 .pramaan-logo-svg {
@@ -2225,5 +2405,16 @@
     flex-direction: column;
     gap: 10px;
     text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .pramaan-logo-header .pramaan-logo-img {
+    width: 46px;
+    height: 46px;
+  }
+  .pramaan-logo-auth .pramaan-logo-img {
+    width: 44px;
+    height: 44px;
   }
 }

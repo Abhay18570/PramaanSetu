@@ -446,7 +446,7 @@ export function Footer({
         <div className="gov-container gov-footer-grid">
           {/* Brand Col */}
           <div className="gov-footer-brand-col">
-            <Brand light />
+            <Brand light variant="footer" />
             <p className="gov-footer-tagline">
               AI-Powered Application Validation, Document Authentication and Regulatory Compliance Verification.
             </p>

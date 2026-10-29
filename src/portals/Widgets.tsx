@@ -75,18 +75,31 @@ export function DataTable({
   officer = false,
   title = 'Recent Applications',
   action,
+  statusFilter,
+  onStatusFilterChange,
 }: {
   records: Application[]
   officer?: boolean
   title?: string
   action?: ReactNode
+  statusFilter?: string
+  onStatusFilterChange?: (status: string) => void
 }) {
   useTranslation()
   const { user } = useAuth()
   const [operationMessage, setOperationMessage] = useState('')
   const [query, setQuery] = useState('')
-  const [status, setStatus] = useState('All')
+  const [internalStatus, setInternalStatus] = useState('All')
   const [sort, setSort] = useState('newest')
+
+  const status = statusFilter !== undefined ? statusFilter : internalStatus
+  const handleStatusChange = (val: string) => {
+    if (onStatusFilterChange) {
+      onStatusFilterChange(val)
+    } else {
+      setInternalStatus(val)
+    }
+  }
 
   const filtered = filterApplications(records, query, status, sort)
 
@@ -137,7 +150,7 @@ export function DataTable({
                 <select
                   aria-label="Filter by status"
                   value={status}
-                  onChange={(event) => setStatus(event.target.value)}
+                  onChange={(event) => handleStatusChange(event.target.value)}
                   className="gov-filter-select"
                 >
                   <option value="All">All Statuses</option>
@@ -283,7 +296,7 @@ export function DataTable({
                   className="gov-btn gov-btn-secondary gov-btn-sm"
                   onClick={() => {
                     setQuery('')
-                    setStatus('All')
+                    handleStatusChange('All')
                   }}
                 >
                   <RotateCcw size={14} />

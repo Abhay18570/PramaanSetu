@@ -161,15 +161,45 @@
   padding: 20px 10px 66px;
 }
 
-.is-collapsed .gov-sidebar-brand-box > a { justify-content: center; }
+.is-collapsed .gov-sidebar-brand-box > a {
+  justify-content: center;
+  display: flex;
+}
 
-.is-collapsed .gov-sidebar-brand-box > a span,
+.is-collapsed .gov-sidebar-brand-box > a .gov-brand-meta,
+.is-collapsed .gov-sidebar-brand-box > a .gov-brand-meta span,
 .is-collapsed .gov-sidebar-portal-tag,
 .is-collapsed .gov-sidebar-section-label,
 .is-collapsed .gov-sidebar-link span,
 .is-collapsed .gov-sidebar-user-info,
 .is-collapsed .gov-sidebar-logout-btn span,
 .is-collapsed .gov-demo-actions span { display: none; }
+
+.is-collapsed .gov-sidebar-brand-box > a .pramaan-logo-sidebar-collapsed,
+.is-collapsed .gov-sidebar-brand-box > a .pramaan-logo-emblem-badge {
+  display: flex !important;
+}
+
+.is-collapsed .gov-sidebar-brand-box > a .pramaan-logo-emblem {
+  display: flex !important;
+}
+
+.is-collapsed .gov-sidebar-brand-box > a .pramaan-logo-sidebar {
+  display: flex !important;
+  max-width: 44px;
+  height: 44px;
+  padding: 3px;
+  border-radius: 8px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.is-collapsed .gov-sidebar-brand-box > a .pramaan-logo-sidebar .pramaan-logo-img {
+  object-fit: cover;
+  object-position: center 10%;
+  transform: scale(1.68);
+  transform-origin: center 25%;
+}
 
 .is-collapsed .gov-sidebar-collapse {
   top: auto;

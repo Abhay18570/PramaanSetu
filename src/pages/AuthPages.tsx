@@ -14,7 +14,7 @@ import {
   PlayCircle,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Brand } from '../components/Shared'
+import { Brand, PramaanSetuLogo } from '../components/Shared'
 import { FormField, LocalNotice, SubmitButton } from '../components/Forms'
 import AccountFields from '../components/AccountFields'
 import ConfirmAction from '../components/ConfirmAction'
@@ -49,7 +49,7 @@ export function AuthLayout({ children, wide = false }: { children: ReactNode; wi
       {/* Main Header */}
       <header className="gov-auth-header">
         <div className="gov-container gov-auth-header-inner">
-          <Brand />
+          <Brand variant="auth" />
           <Link to="/" className="gov-btn gov-btn-outline-blue gov-btn-sm">
             <ArrowLeft size={14} />
             <span>Back to Portal Home</span>
@@ -86,9 +86,14 @@ export function AuthLayout({ children, wide = false }: { children: ReactNode; wi
   )
 }
 
-function AuthHeading({ title, text }: { title: string; text: string }) {
+function AuthHeading({ title, text, showLogo = true }: { title: string; text: string; showLogo?: boolean }) {
   return (
     <div className="gov-auth-heading">
+      {showLogo && (
+        <div className="gov-auth-heading-logo">
+          <PramaanSetuLogo variant="auth-card" />
+        </div>
+      )}
       <h1>{title}</h1>
       <p>{text}</p>
       <div className="gov-heading-bar gov-bar-centered" />

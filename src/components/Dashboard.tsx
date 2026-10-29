@@ -1,5 +1,4 @@
 import {
-  ShieldCheck,
   CheckCircle2,
   FileSearch,
   Scale,
@@ -14,6 +13,7 @@ import {
   Clock,
   Info,
 } from 'lucide-react'
+import { PramaanSetuLogo } from './Shared'
 
 export function HeroDashboard() {
   return (
@@ -161,7 +161,7 @@ export default function Dashboard() {
           {/* Sidebar */}
           <aside className="gov-preview-sidebar">
             <div className="gov-preview-brand-tag">
-              <ShieldCheck size={18} />
+              <PramaanSetuLogo variant="emblem" size={20} />
               <span>PramaanSetu</span>
             </div>
 
